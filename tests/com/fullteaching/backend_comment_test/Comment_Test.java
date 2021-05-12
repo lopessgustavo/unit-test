@@ -12,12 +12,13 @@ import org.junit.jupiter.api.Test;
 class Comment_Test {
 	Comment comment;
 	Comment comment2;
-	
+	Comment comment3;
 	@BeforeEach
 	private void init() {
 		comment = new Comment();
 		User user = new User("Gustavo Lopes", "12345", "lopes", "foto.jpeg", "aluno");
 		comment2 = new Comment("ola", 12345L, user, comment);
+		comment3 = new Comment("ola2",123L,user);
 	}
 	
 	
@@ -101,5 +102,12 @@ class Comment_Test {
 	void setCommentParent_Test() {
 		comment.setCommentParent(comment2);
 		assertEquals(comment.getCommentParent(), comment2);
+	}
+	@Test
+	void toString_test(){
+		assertAll(
+				() -> assertEquals(comment.toString(), "Comment[message: \"" + comment.getMessage() + "\", author: \"\", parent: \"" + comment.getCommentParent() + "\", #replies: 0date: \"" + comment.getDate() + "\"]"),
+				() -> assertEquals(comment2.toString(), "Comment[message: \"" + comment2.getMessage() + "\", author: \"" + comment2.getUser() + "\", parent: \"" + comment2.getCommentParent().getMessage() + "\", #replies: " + comment2.getReplies().size() + "date: \"" + comment2.getDate() + "\"]")
+				);
 	}
 }

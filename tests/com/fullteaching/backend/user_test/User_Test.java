@@ -13,12 +13,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.*;
 
 class User_Test {
+	private User user;
 	private User user1;
+	private User user2;
+	private User user3;
 
 	
 	@BeforeEach
 	private void initialize() {
+		user  = new User();
 		user1 = new User("Gustavo Lopes", "12345", "lopes", "foto.jpeg", "aluno");
+		user2 = new User("Gustavo Lopes", "12345", "lopes", "", "aluno");
+		user3 = new User("Gustavo Lopes", "12345", "lopes", null, "aluno");
 	}
 	@Test
 	@DisplayName("getId Test")
@@ -105,7 +111,7 @@ class User_Test {
 	@DisplayName("getRegistrationDate Test")
 	public void getRegistrationDate_Test() {
 		//Como da diferenças de ms, coloquei uma margem de 2 ms pra passar no teste 		
-		Assertions.assertTrue(Math.abs(user1.getRegistrationDate() - System.currentTimeMillis()) <= 2);
+		Assertions.assertTrue(Math.abs(user1.getRegistrationDate() - System.currentTimeMillis()) <= 10);
 	}
 	
 	@Test
@@ -142,7 +148,17 @@ class User_Test {
 				() -> assertFalse(user1.equals(null)),
 				() -> assertTrue(user1.equals(user1)),
 				() -> assertFalse(user1.equals(new Course())),
-				() -> assertTrue(user1.equals(user2))
+				() -> assertTrue(user1.equals(user2)),
+				() -> {
+					user2.setId(user1.getId());
+					user2.setName("Gustavo");
+					assertFalse(user1.equals(user2));
+				},
+				() -> {
+					user2.setId(123L);
+					user2.setName("Gustavo");
+					assertFalse(user1.equals(user2));
+				}
 				);
 	}
 	

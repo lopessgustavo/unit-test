@@ -22,7 +22,7 @@ class Course_Test {
 	User user;
 	@BeforeEach
 	private void init() {
-		user = new User();
+		user = new User("Gustavo","Senha1234","Lopes","","aluno");
 		cd = new CourseDetails();
 		course1 = new Course();
 		course2 = new Course("Teste","foto.jpeg", user);
@@ -150,6 +150,24 @@ class Course_Test {
 		course1.setSessions(sess);
 		assertAll(
 				() -> assertEquals(course1.getSessions(), sess)
+				);
+	}
+	
+	@Test
+	void equals_test() {
+		assertAll(
+				() -> assertEquals(course1.equals(null), false),
+				() -> assertEquals(course1.equals(new Session()),false),
+				() -> assertEquals(course1.equals(course1),true),
+				() -> {course2.setId(2L); assertFalse(course1.equals(course2));},
+				() -> {course2.setId(course1.getId()); assertTrue(course1.equals(course2));}
+				);
+	}
+	
+	@Test
+	void toString_test() {
+		assertAll(
+				() -> assertEquals(course2.toString(),"Course[title: \"Teste\", teacher: \"Lopes\", #attenders: 0, #sessions: 0]")
 				);
 	}
 	
